@@ -14,13 +14,27 @@ option customer => (
 
 sub run {
     my $self = shift;
-    my $invoice = $self->invoices->create->save;
+
+    my $invoice = $self->invoices->create( $self->prefill )->save;
+
     chomp( my $editor = $ENV{EDITOR} || `which vim` );
     system( $editor => $invoice->file );
     unless ( $invoice->reload->has_data ) {
         say 'Incomplete invoice, aborted.';
         $invoice->delete;
     }
+}
+
+sub prefill {
+    my ( $self, $invoice ) = @_;
+    my $customer = $self->customer || return ();
+
+    if ( my $prev = $self->invoices->list( customer => $self->customer )->last ) {
+        return map { $_ => $prev->$_ } qw/ customer items tax_rate /;
+    }
+
+    say "Customer not found.";
+    return ();
 }
 
 1;

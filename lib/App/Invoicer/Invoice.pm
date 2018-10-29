@@ -6,18 +6,18 @@ use List::Util qw/ sum0 /;
 use JSON qw/ decode_json /;
 
 has file    => is => 'ro', required => 1; # must be a Mojo::File object
-has _source => is => 'lazy', clearer => 1;
+has source  => is => 'lazy', clearer => 1;
 
 has number => is => 'lazy', clearer => 1, default => sub{
-    $_[0]->_source->{number} || $_[0]->_number_from_filename
+    $_[0]->source->{number} || $_[0]->_number_from_filename
 };
 
 has items  => is => 'lazy', clearer => 1, default => sub{
-    shift->_source->{items} || [_empty_item()]
+    shift->source->{items} || [_empty_item()]
 };
 
 has tax_rate => is => 'lazy', clearer => 1, default => sub{
-    $_[0]->_source->{tax_rate} || $_[0]->_source->{taxed} || 21
+    $_[0]->source->{tax_rate} || $_[0]->source->{taxed} || 21
 };
 
 has date =>
@@ -25,18 +25,18 @@ has date =>
     clearer => 1,
     coerce  => sub{ ref $_[0] ? $_[0] : _parsedate($_[0]) },
     default => sub{
-        my $str = shift->_source->{date};
+        my $str = shift->source->{date};
         $str ? _parsedate( $str ) : Date::Tiny->now;
     };
 
 has customer =>
-	is      => 'lazy',
+    is      => 'lazy',
     clearer => 1,
     coerce  => sub {
         ref $_[0] eq 'HASH' ? App::Invoicer::Invoice::Customer->new($_[0]) : $_[0]
     },
     default => sub{
-        App::Invoicer::Invoice::Customer->new( shift->_source->{customer} ||{} );
+        App::Invoicer::Invoice::Customer->new( shift->source->{customer} ||{} );
     };
 
 sub to_hash {
@@ -62,7 +62,7 @@ sub delete {
 # Just clear everything and let lazy loading do it's stuff.
 sub reload {
     my $self = shift;
-    $self->$_ for map {"clear_$_"} qw/ number items tax_rate date customer _source /;
+    $self->$_ for map {"clear_$_"} qw/ number items tax_rate date customer source /;
     $self;
 }
 
@@ -124,7 +124,7 @@ sub total {
 
 sub is_stored { -f shift->file }
 
-sub _build__source {
+sub _build_source {
     my $self = shift;
     return {} unless $self->is_stored;
     decode_json( $self->file->slurp );
@@ -132,7 +132,7 @@ sub _build__source {
 
 sub _number_from_filename {
     my $self = shift;
-    my ($id) = $self->file =~ /\d+\.json$/;
+    my ($id) = $self->file =~ /(\d+)\.json$/;
     return $id;
 }
 
