@@ -27,6 +27,7 @@ subcommand create => 'App::Invoicer::cmd::create';
 subcommand edit   => 'App::Invoicer::cmd::edit';
 subcommand view   => 'App::Invoicer::cmd::view';
 subcommand list   => 'App::Invoicer::cmd::list';
+subcommand remove => 'App::Invoicer::cmd::remove';
 
 sub run { shift->osprey_help }
 
