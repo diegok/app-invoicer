@@ -3,13 +3,16 @@ use Moo; use v5.10;
 use File::ShareDir 'dist_file';
 use Mojo::Server::Daemon;
 
-has daemon  => is => 'lazy';
-has port    => is => 'ro',   default => sub{3000};
-has url     => is => 'lazy', default => sub{'http://127.0.0.1:'. shift->port};
-has invoice => is => 'ro';
+has daemon   => is => 'lazy';
+has port     => is => 'ro',   default => sub{3000};
+has url      => is => 'lazy', default => sub{'http://127.0.0.1:'. shift->port};
+
+has invoices => is => 'ro', required => 1;
+has invoice  => is => 'ro'; # selected
 
 sub run {
     my $self = shift;
+    $self->daemon->app->invoices($self->invoices);
     $self->daemon->app->invoice($self->invoice);
 
     say 'The invoice is ready at: ', $self->url;
