@@ -19,14 +19,18 @@ This is a perl project and at some point I will upload it to CPAN to allow easie
 
 > dzil install
 
+Once installed, you can get a list of sub-commands just running `invoicer` and help on every subcommand using --help.
+
 ## TODO
 
 This is what future versions will probably implement:
 
-- Improve list --summary to make it trivial to handle bureaucracy
+- Add generic invoice template and allow to customize and keep it with invoice definitions.
+- Improve list --summary to make it trivial to handle bureaucracy.
 - Add flags to invoices to improve list filtering (mark invoices already paid)
 - CSV output of listed invoices
 - Git support to keep track of invoice changes
+- Improve docs
 
 ## Interested?
 
