@@ -3,8 +3,8 @@ use Moo; use v5.10;
 use Mojo::File qw/ path /;
 use App::Invoicer::Invoice;
 
-has root     => is => 'ro', required => 1;
-has root_dir => is => 'lazy', default => sub{ path( shift->root ) };
+has root         => is => 'ro', required => 1;
+has root_dir     => is => 'lazy', default => sub{ path( shift->root ) };
 has current_year => is => 'lazy';
 
 sub years {
@@ -42,6 +42,8 @@ sub list {
             $_->customer->tax_id =~ /\Q$opt{customer}\E/i
         );
         1;
+    })->sort(sub{
+        $a->number <=> $b->number
     });
 }
 
@@ -55,12 +57,10 @@ sub get {
 }
 
 sub create {
-    my $self = shift;
-    # TODO: accept year and number to create old invoices (must check it's coherent)
-
-    App::Invoicer::Invoice->new(
-        file => $self->current_year->child( $self->next_number .'.json' )
-    );
+    my ( $self, %data ) = @_;
+    say "Number is ignored on creation to allow auto-numbering" if delete $data{number};
+    $data{file} = $self->current_year->child( $self->next_number .'.json' );
+    App::Invoicer::Invoice->new( %data );
 }
 
 sub next_number {

@@ -1,6 +1,6 @@
 package App::Invoicer::cmd::remove;
 use Moo; use v5.10;
-use CLI::Osprey;
+use CLI::Osprey desc => 'Remove invoices, use with caution!';
 
 has invoices => is => 'lazy', default => sub {
     App::Invoicer::Invoices->new( root => shift->parent_command->root_dir )
