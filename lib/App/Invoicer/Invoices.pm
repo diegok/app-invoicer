@@ -1,4 +1,5 @@
 package App::Invoicer::Invoices;
+
 use Moo; use v5.10;
 use Mojo::File qw/ path /;
 use App::Invoicer::Invoice;

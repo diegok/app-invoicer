@@ -1,4 +1,5 @@
 package App::Invoicer::cmd::create;
+
 use Moo; use v5.10;
 use CLI::Osprey desc => 'Create a new invoice';
 

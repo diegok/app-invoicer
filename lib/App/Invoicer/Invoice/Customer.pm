@@ -1,4 +1,5 @@
 package App::Invoicer::Invoice::Customer;
+
 use Moo;
 
 has name    => is => 'rw', default => sub{''};

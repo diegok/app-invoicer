@@ -1,4 +1,5 @@
 package App::Invoicer;
+
 use Moo;
 use CLI::Osprey;
 use Mojo::File qw/ path /;

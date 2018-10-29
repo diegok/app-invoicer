@@ -1,4 +1,5 @@
 package App::Invoicer::cmd::list;
+
 use Moo; use v5.10;
 use CLI::Osprey desc => 'List, filter and summarize stored invoices';
 use App::Invoicer::Invoices;

@@ -1,4 +1,5 @@
 package App::Invoicer::cmd::view;
+
 use Moo; use v5.10;
 use CLI::Osprey desc => 'Show an invoice on your browser so you can print it';
 use App::Invoicer::Viewer;
