@@ -1,4 +1,5 @@
 package App::Invoicer::Viewer;
+
 use Moo; use v5.10;
 use File::ShareDir 'dist_file';
 use Mojo::Server::Daemon;

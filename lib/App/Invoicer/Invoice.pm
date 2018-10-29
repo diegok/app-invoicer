@@ -1,4 +1,5 @@
 package App::Invoicer::Invoice;
+
 use Moo;
 use App::Invoicer::Invoice::Customer;
 use Date::Tiny;

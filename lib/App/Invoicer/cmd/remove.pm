@@ -1,4 +1,5 @@
 package App::Invoicer::cmd::remove;
+
 use Moo; use v5.10;
 use CLI::Osprey desc => 'Remove invoices, use with caution!';
 

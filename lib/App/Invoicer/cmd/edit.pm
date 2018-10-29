@@ -1,4 +1,5 @@
 package App::Invoicer::cmd::edit;
+
 use Moo; use v5.10;
 use CLI::Osprey desc => 'Edit stored invoice on your';
 
