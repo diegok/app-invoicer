@@ -17,7 +17,10 @@ option number => (
 sub run {
     my $self = shift;
     my $invoice = $self->invoices->get( $self->number ) || return $self->missing;
-    App::Invoicer::Viewer->new( invoice => $invoice )->run;
+    App::Invoicer::Viewer->new(
+        invoices => $self->invoices,
+        invoice  => $invoice
+    )->run;
 }
 
 sub missing {
