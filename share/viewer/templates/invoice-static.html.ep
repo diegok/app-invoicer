@@ -1,0 +1,90 @@
+<html>
+<head>
+<title>fkl<%= $invoice->number %></title>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<style type="text/css">
+body { padding:0; margin:0; font-family: arial, sans-serif, helvetica; font-size: 18px; height:29.7cm; }
+div { width:20cm; margin:0 auto; }
+div.round { border:2px solid #111; border-radius:12px; margin-top:0.5cm; }
+p { margin:0; padding:1px; }
+div#head { margin-bottom:1.2cm; }
+div#customer { height:4.4cm; }
+div#items { height:7cm; margin-top:0.6cm; }
+div#foot { margin-top:1.2cm; font-size:13px; }
+div#subtotal { margin-top:1.3cm; }
+div#customer > p, div#items > p { margin:0.3cm 0.3cm 0.3cm 0.3cm; }
+div table { margin:0.3cm; padding:0; }
+div table tr { margin:0; padding:0; }
+div table td.desc { width:16.3cm; padding:0; margin:0; }
+div table td.price { text-align:right; width:2.6cm; padding:0; margin:0; }
+div#items table td.desc { width:16cm; padding-left:0.3cm; }
+div#head table { margin:0; padding:0; width:100%; }
+div.customer { float:right; width:auto; margin:0; padding:0 0.5cm 0 0; }
+div.customer p { margin:0; padding:0; }
+div.customer p.cif { margin-top:0.5cm; }
+div#customer > p { margin-bottom:0; }
+</style>
+</head>
+
+<body>
+<div id="head">
+    <table>
+        <tr>
+            <td><%= image '/img/fkl.png' %></td>
+            <td valign="top" align="right">
+                <p style="margin-top:0.3cm;">Factura Nº <%= sprintf('%05d',$invoice->number) %>/<%= $invoice->date->year %></p>
+                <%=tag p => $invoice->date_string('es') %>
+            </td>
+        </tr>
+        </table>
+</div>
+<div id="customer" class="round">
+    <p>A</p>
+    <div class="customer">
+        <p class="client"><%= $invoice->customer->name %></p>
+        <p class="address"><%= $invoice->customer->address->[0] %></p>
+        <p class="zipcode"><%= $invoice->customer->address->[1] %></p>
+        <p class="cif">CIF: <%= $invoice->customer->tax_id %></p>
+    </div>
+</div>
+<div id="items" class="round">
+    <p>Concepto</p>
+    <table>
+      % for my $item (@{$invoice->items}) {
+        <tr>
+            <td class="desc"><%= $item->{description} %></td>
+            <td class="price"><%= sprintf('%.2f', $item->{price}) %> €</td>
+        </tr>
+      % }
+    </table>
+</div>
+<div id="subtotal" class="round">
+    <table>
+        <tr>
+            <td class="desc">Subtotal</td>
+            <td class="price"><%= sprintf('%.2f', $invoice->subtotal) %> €</td>
+        </tr>
+    </table>
+</div>
+<div id="iva" class="round">
+    <table>
+        <tr>
+            <td class="desc">IVA <%= $invoice->tax_rate %>%</td>
+            <td class="price"><%= sprintf('%.2f', $invoice->tax) %> €</td>
+        </tr>
+    </table>
+</div>
+<div id="total" class="round">
+    <table>
+        <tr>
+            <td class="desc">Total</td>
+            <td class="price"><%= sprintf('%.2f', $invoice->total) %> €</td>
+        </tr>
+    </table>
+</div>
+<div id="foot">
+<p>Cuenta para pago por transferencia IBAN ES18 2038 1562 1460 0004 0052</p>
+<p style="margin-bottom:0;padding-bottom:0;">Si tiene alguna duda sobre esta factura puede comunicarse con: billing@freekeylabs.com</p>
+</div>
+</body>
+</html>

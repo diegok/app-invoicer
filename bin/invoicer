@@ -1,0 +1,13 @@
+#!/usr/bin/env perl
+# use FindBin;
+# use lib "$FindBin::Bin/../lib";
+
+use App::Invoicer;
+use Mojo::File qw/ path /;
+use Mojo::JSON qw/ decode_json /;
+
+App::Invoicer->new_with_options(
+    map decode_json(path($_)->slurp),
+    grep -f,
+    "$ENV{HOME}/.config/invoicer"
+)->run;
